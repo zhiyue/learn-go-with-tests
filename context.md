@@ -1,8 +1,10 @@
 # Context
 
+**[You can find all the code for this chapter here](https://github.com/quii/learn-go-with-tests/tree/master/context)**
+
 Software often kicks off long-running, resource-intensive processes (often in goroutines). If the action that caused this gets cancelled or fails for some reason you need to stop these processes in a consistent way through your application. 
 
-If you dont manage this your snappy Go application that you're so proud of could start having difficult to debug performance problems.  
+If you don't manage this your snappy Go application that you're so proud of could start having difficult to debug performance problems.  
 
 In this chapter we'll use the package `context` to help us manage long-running processes.
 
@@ -56,7 +58,7 @@ func TestHandler(t *testing.T) {
 }
 ```
 
-Now that we have a happy path, we want to make a more realistic scenario where the `Store` cant finish a`Fetch` before the user cancels the request.
+Now that we have a happy path, we want to make a more realistic scenario where the `Store` can't finish a`Fetch` before the user cancels the request.
 
 ## Write the test first
 
@@ -110,7 +112,7 @@ t.Run("tells store to cancel work if request is cancelled", func(t *testing.T) {
   })
 ```
 
-From the google blog again
+From the [Go Blog: Context](https://blog.golang.org/context)
 
 > The context package provides functions to derive new Context values from existing ones. These values form a tree: when a Context is canceled, all Contexts derived from it are also canceled.
 
@@ -149,8 +151,8 @@ We'll need to update our happy path test to assert that it does not get cancelle
 
 ```go
 t.Run("returns data from store", func(t *testing.T) {
-    store := SpyStore{response: data}
-    svr := Server(&store)
+    store := &SpyStore{response: data}
+    svr := Server(store)
 
     request := httptest.NewRequest(http.MethodGet, "/", nil)
     response := httptest.NewRecorder()
@@ -267,7 +269,7 @@ One of the main points of `context` is that it is a consistent way of offering c
 
 > Incoming requests to a server should create a Context, and outgoing calls to servers should accept a Context. The chain of function calls between them must propagate the Context, optionally replacing it with a derived Context created using WithCancel, WithDeadline, WithTimeout, or WithValue. When a Context is canceled, all Contexts derived from it are also canceled.
 
-From the Google blog again:
+From the [Go Blog: Context](https://blog.golang.org/context) again:
 
 > At Google, we require that Go programmers pass a Context parameter as the first argument to every function on the call path between incoming and outgoing requests. This allows Go code developed by many different teams to interoperate well. It provides simple control over timeouts and cancelation and ensures that critical values like security credentials transit Go programs properly.
 
@@ -340,8 +342,6 @@ Finally the code uses another `select` to wait for that goroutine to finish its 
 It's similar to our approach from before, we use Go's concurrency primitives to make two asynchronous processes race each other to determine what we return. 
 
 You'll take a similar approach when writing your own functions and methods that accept a `context` so make sure you understand what's going on.
-
-We removed the reference to `ctx` from the `SpyStore`'s fields because it's no longer interesting to us. We're strictly testing behaviour now which we prefer over testing implementation details such as "you passed through a particular value to function `foo`".
 
 Finally we can update our tests. Comment out our cancellation test so we can fix the happy path test first.
 
@@ -484,7 +484,7 @@ In short, **if a function needs some values, put them as typed parameters rather
 
 #### But...
 
-On other other hand, it can be helpful to include information that is orthogonal to a request in a context, such as a trace id. Potentially this information would not be needed by every function in your call-stack and would make your functional signatures very messy.
+On other hand, it can be helpful to include information that is orthogonal to a request in a context, such as a trace id. Potentially this information would not be needed by every function in your call-stack and would make your functional signatures very messy.
 
 [Jack Lindamood says **Context.Value should inform, not control**](https://medium.com/@cep21/how-to-correctly-use-context-context-in-go-1-7-8f2c0fafdf39)
 

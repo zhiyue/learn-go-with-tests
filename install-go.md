@@ -32,7 +32,7 @@ You can verify the installation with:
 
 ```sh
 $ go version
-go version go1.10 darwin/amd64
+go version go1.13.1 darwin/amd64
 ```
 
 ## Go Environment
@@ -93,6 +93,8 @@ A good option for debugging Go (that's integrated with VS Code) is Delve. This c
 ```sh
 go get -u github.com/go-delve/delve/cmd/dlv
 ```
+
+For additional help configuring and running the Go debugger in VS Code, please reference the [VS Code debugging documentation](https://github.com/Microsoft/vscode-go/wiki/Debugging-Go-code-using-VS-Code).
 
 ## Go Linting
 

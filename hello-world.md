@@ -10,6 +10,8 @@ Make a directory in the following path `$GOPATH/src/github.com/{your-user-id}/he
 
 So if you're on a unix based OS and your username is "bob" and you are happy to stick with Go's conventions about `$GOPATH` (which is the easiest way of setting up) you could run `mkdir -p $GOPATH/src/github.com/bob/hello`.
 
+For subsequent chapters, you can make a new folder with whatever name you like to put the code in e.g `$GOPATH/src/github.com/{your-user-id}/integers` for the next chapter might be sensible. Some readers of this book like to make an enclosing folder for all the work such as "learn-go-with-tests/hello". In short, it's up to you how you structure your folders.
+
 Create a file in this directory called `hello.go` and write this code. To run it type `go run hello.go`.
 
 ```go
@@ -64,7 +66,7 @@ func TestHello(t *testing.T) {
     want := "Hello, world"
 
     if got != want {
-        t.Errorf("got '%s' want '%s'", got, want)
+        t.Errorf("got %q want %q", got, want)
     }
 }
 ```
@@ -94,7 +96,9 @@ We're declaring some variables with the syntax `varName := value`, which lets us
 
 #### `t.Errorf`
 
-We are calling the `Errorf` _method_ on our `t` which will print out a message and fail the test. The `f` stands for format which allows us to build a string with values inserted into the placeholder values `%s`. When you made the test fail it should be clear how it works.
+We are calling the `Errorf` _method_ on our `t` which will print out a message and fail the test. The `f` stands for format which allows us to build a string with values inserted into the placeholder values `%q`. When you made the test fail it should be clear how it works.
+
+You can read more about the placeholder strings in the [fmt go doc](https://golang.org/pkg/fmt/#hdr-Printing). For tests `%q` is very useful as it wraps your values in double quotes.
 
 We will later explore the difference between methods and functions.
 
@@ -103,6 +107,8 @@ We will later explore the difference between methods and functions.
 Another quality of life feature of Go is the documentation. You can launch the docs locally by running `godoc -http :8000`. If you go to [localhost:8000/pkg](http://localhost:8000/pkg) you will see all the packages installed on your system.
 
 The vast majority of the standard library has excellent documentation with examples. Navigating to [http://localhost:8000/pkg/testing/](http://localhost:8000/pkg/testing/) would be worthwhile to see what's available to you.
+
+If you don't have `godoc` command, then maybe you are using the newer version of Go (1.13 or later) which is [no longer including `godoc`](https://golang.org/doc/go1.13#godoc). You can manually install it with `go get golang.org/x/tools/cmd/godoc`.
 
 ### Hello, YOU
 
@@ -124,7 +130,7 @@ func TestHello(t *testing.T) {
     want := "Hello, Chris"
 
     if got != want {
-        t.Errorf("got '%s' want '%s'", got, want)
+        t.Errorf("got %q want %q", got, want)
     }
 }
 ```
@@ -223,7 +229,7 @@ func TestHello(t *testing.T) {
         want := "Hello, Chris"
 
         if got != want {
-            t.Errorf("got '%s' want '%s'", got, want)
+            t.Errorf("got %q want %q", got, want)
         }
     })
 
@@ -232,7 +238,7 @@ func TestHello(t *testing.T) {
         want := "Hello, World"
 
         if got != want {
-            t.Errorf("got '%s' want '%s'", got, want)
+            t.Errorf("got %q want %q", got, want)
         }
     })
 
@@ -257,7 +263,7 @@ func TestHello(t *testing.T) {
     assertCorrectMessage := func(t *testing.T, got, want string) {
         t.Helper()
         if got != want {
-            t.Errorf("got '%s' want '%s'", got, want)
+            t.Errorf("got %q want %q", got, want)
         }
     }
 

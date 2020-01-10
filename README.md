@@ -6,7 +6,7 @@
 
 [Art by Denise](https://twitter.com/deniseyu21)
 
-![Build Status](https://travis-ci.org/quii/learn-go-with-tests.svg?branch=master)
+[![Build Status](https://travis-ci.org/quii/learn-go-with-tests.svg?branch=master)](https://travis-ci.org/quii/learn-go-with-tests)
 [![Go Report Card](https://goreportcard.com/badge/github.com/quii/learn-go-with-tests)](https://goreportcard.com/report/github.com/quii/learn-go-with-tests)
 
 - Formats: [Gitbook](https://quii.gitbook.io/learn-go-with-tests), [EPUB or PDF](https://github.com/quii/learn-go-with-tests/releases)
@@ -38,6 +38,8 @@
 13. [Reflection](reflection.md) - Learn about reflection
 13. [Sync](sync.md) - Learn some functionality from the sync package including `WaitGroup` and `Mutex`
 13. [Context](context.md) - Use the context package to manage and cancel long-running processes
+14. [Intro to property based tests](roman-numerals.md) - Practice some TDD with the Roman Numerals kata and get a brief intro to property based tests
+15. [Maths](math.md) - Use the `math` package to draw an SVG clock
 
 ### Build an application
 

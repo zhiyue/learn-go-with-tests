@@ -35,7 +35,7 @@ It's not uncommon to write a function that might fail for different reasons and 
 As Pedro says, we _could_ write a test for the status error like so.
 
 ```go
-t.Run("when you dont get a 200 you get a status error", func(t *testing.T) {
+t.Run("when you don't get a 200 you get a status error", func(t *testing.T) {
 
     svr := httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
         res.WriteHeader(http.StatusTeapot)
@@ -93,7 +93,7 @@ Rather than a magical string, we have actual _data_ to work with.
 Let's change our existing test to reflect this need
 
 ```go
-t.Run("when you dont get a 200 you get a status error", func(t *testing.T) {
+t.Run("when you don't get a 200 you get a status error", func(t *testing.T) {
 
     svr := httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
         res.WriteHeader(http.StatusTeapot)
@@ -150,13 +150,13 @@ if res.StatusCode != http.StatusOK {
 
 This change has had some _real positive effects_
 
-- Our `DumbGetter` function has become simper, it's no longer concerned with the intricacies of an error string, it just creates a `BadStatusError`.
+- Our `DumbGetter` function has become simpler, it's no longer concerned with the intricacies of an error string, it just creates a `BadStatusError`.
 - Our tests now reflect (and document) what a user of our code _could_ do if they decided they wanted to do some more sophisticated error handling than just logging. Just do a type assertion and then you get easy access to the properties of the error. 
 - It is still "just" an `error`, so if they choose to they can pass it up the call stack or log it like any other `error`.
 
 ## Wrapping up
 
-If you find yourself testing for multiple error conditions dont fall in to the trap of comparing the error messages. 
+If you find yourself testing for multiple error conditions don't fall in to the trap of comparing the error messages. 
 
 This leads to flaky and difficult to read/write tests and it reflects the difficulties the users of your code will have if they also need to start doing things differently depending on the kind of errors that have occurred.
 

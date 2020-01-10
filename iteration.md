@@ -20,7 +20,7 @@ func TestRepeat(t *testing.T) {
     expected := "aaaaa"
 
     if repeated != expected {
-        t.Errorf("expected '%s' but got '%s'", expected, repeated)
+        t.Errorf("expected %q but got %q", expected, repeated)
     }
 }
 ```
@@ -61,7 +61,13 @@ func Repeat(character string) string {
 }
 ```
 
-Unlike other languages like C, Java, or JavaScript there are no parentheses surrounding the three components of the for statement and the braces { } are always required.
+Unlike other languages like C, Java, or JavaScript there are no parentheses surrounding the three components of the for statement and the braces { } are always required. You might wonder what is happening in the row
+
+```go
+    var repeated string
+```
+
+as we've been using `:=` so far to declare and initializing variables. However, `:=` is simply [short hand for both steps](https://gobyexample.com/variables). Here we are declaring a `string` variable only. Hence, the explicit version. We can also use `var` to declare functions, as we'll see later on.
 
 Run the test and it should pass.
 
@@ -123,7 +129,7 @@ _NOTE_ by default Benchmarks are run sequentially.
 
 * Change the test so a caller can specify how many times the character is repeated and then fix the code
 * Write `ExampleRepeat` to document your function
-* Have a look through the [the strings](https://golang.org/pkg/strings) package. Find functions you think could be useful and experiment with them by writing tests like we have here. Investing time learning the standard library will really pay off over time.
+* Have a look through the [strings](https://golang.org/pkg/strings) package. Find functions you think could be useful and experiment with them by writing tests like we have here. Investing time learning the standard library will really pay off over time.
 
 ## Wrapping up
 

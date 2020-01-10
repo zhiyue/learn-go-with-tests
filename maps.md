@@ -24,7 +24,7 @@ func TestSearch(t *testing.T) {
     want := "this is just a test"
 
     if got != want {
-        t.Errorf("got '%s' want '%s' given, '%s'", got, want, "test")
+        t.Errorf("got %q want %q given, %q", got, want, "test")
     }
 }
 ```
@@ -83,7 +83,7 @@ func assertStrings(t *testing.T, got, want string) {
     t.Helper()
 
     if got != want {
-        t.Errorf("got '%s' want '%s'", got, want)
+        t.Errorf("got %q want %q", got, want)
     }
 }
 ```
@@ -217,12 +217,17 @@ t.Run("unknown word", func(t *testing.T) {
 
     assertError(t, got, ErrNotFound)
 })
+}
 
 func assertError(t *testing.T, got, want error) {
     t.Helper()
 
+    if got == nil {
+        t.Fatal("expected to get an error.")
+    }
+    
     if got != want {
-        t.Errorf("got error '%s' want '%s'", got, want)
+        t.Errorf("got error %q want %q", got, want)
     }
 }
 ```
@@ -245,7 +250,7 @@ func TestAdd(t *testing.T) {
     }
 
     if want != got {
-        t.Errorf("got '%s' want '%s'", got, want)
+        t.Errorf("got %q want %q", got, want)
     }
 }
 ```
@@ -294,11 +299,11 @@ var m map[string]string
 Instead, you can initialize an empty map like we were doing above, or use the `make` keyword to create a map for you:
 
 ```go
-dictionary = map[string]string{}
+var dictionary = map[string]string{}
 
 // OR
 
-dictionary = make(map[string]string)
+var dictionary = make(map[string]string)
 ```
 
 Both approaches create an empty `hash map` and point `dictionary` at it. Which ensures that you will never get a runtime panic.
@@ -327,7 +332,7 @@ func assertDefinition(t *testing.T, dictionary Dictionary, word, definition stri
     }
 
     if definition != got {
-        t.Errorf("got '%s' want '%s'", got, definition)
+        t.Errorf("got %q want %q", got, definition)
     }
 }
 ```
@@ -363,9 +368,22 @@ func TestAdd(t *testing.T) {
         assertDefinition(t, dictionary, word, definition)
     })
 }
+...
+func assertError(t *testing.T, got, want error) {
+	t.Helper()
+	if got != want {
+		t.Errorf("got %q want %q", got, want)
+	}
+	if got == nil {
+		if want == nil {
+			return
+		}
+		t.Fatal("expected to get an error.")
+	}
+}
 ```
 
-For this test, we modified `Add` to return an error, which we are validating against a new error variable, `ErrWordExists`. We also modified the previous test to check for a `nil` error.
+For this test, we modified `Add` to return an error, which we are validating against a new error variable, `ErrWordExists`. We also modified the previous test to check for a `nil` error, as well as the `assertError` function.
 
 ## Try to run test
 
@@ -523,7 +541,7 @@ We added yet another error type for when the word does not exist. We also modifi
 ```
 ./dictionary_test.go:53:16: dictionary.Update(word, "new test") used as value
 ./dictionary_test.go:64:16: dictionary.Update(word, definition) used as value
-./dictionary_test.go:66:23: undefined: ErrWordDoesNotExists
+./dictionary_test.go:66:23: undefined: ErrWordDoesNotExist
 ```
 
 We get 3 errors this time, but we know how to deal with these.
@@ -593,7 +611,7 @@ func TestDelete(t *testing.T) {
 
     _, err := dictionary.Search(word)
     if err != ErrNotFound {
-        t.Errorf("Expected '%s' to be deleted", word)
+        t.Errorf("Expected %q to be deleted", word)
     }
 }
 ```
